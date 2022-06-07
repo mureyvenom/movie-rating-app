@@ -3,6 +3,6 @@ import axios from 'axios';
 export default axios.create({
   baseURL: 'http://www.omdbapi.com/',
   params: {
-    apiKey: 'b9a28153',
+    apiKey: process.env.REACT_APP_API_KEY,
   },
 });

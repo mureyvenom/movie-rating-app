@@ -28,7 +28,7 @@ const Navbar = () => {
           </Link>
         </div>
         <button onClick={() => setMobielToggle(!mobileToggle)} className="md:hidden">
-          <FiMenu className="text-black" size={20} />
+          <FiMenu className="text-white" size={20} />
         </button>
       </div>
       <nav
@@ -36,8 +36,7 @@ const Navbar = () => {
           mobileToggle ? 'scale-100 h-auto opacity-100 mt-5' : 'scale-0 h-0 opacity-0'
         }`}
       >
-        <NavItem>Home</NavItem>
-        <NavItem>About</NavItem>
+        <NavItem link="/">Home</NavItem>
       </nav>
     </div>
   );

@@ -1,21 +1,24 @@
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useRef } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../components/Button';
 import Footer from '../../components/Footer';
 import MovieCard from '../../components/MovieCard';
 import Navbar from '../../components/Navbar';
 import { searchAndFetch } from '../../redux/movies/movies.actions';
-import { set } from '../../redux/movies/movies.slice';
+import {
+  selectMovies,
+  selectMoviesError,
+  selectMoviesLoading,
+} from '../../redux/movies/movies.selector';
+import { clear, resetMovies } from '../../redux/movies/movies.slice';
 import { AppDispatch } from '../../redux/store';
-import apiConnect from '../../utils/apiConnect';
-import { MovieType } from '../../utils/types';
 
 const Homepage = () => {
-  const [loading, setLoading] = useState(false);
-  const [searchError, setSearchError] = useState('');
-  const [movies, setMovies] = useState<MovieType[]>([]);
   const search = useRef<HTMLInputElement>(null);
+  const allMovies = useSelector(selectMovies);
+  const moviesError = useSelector(selectMoviesError);
+  const moviesLoading = useSelector(selectMoviesLoading);
 
   const dispatch: any = useDispatch<AppDispatch>();
 
@@ -23,32 +26,12 @@ const Homepage = () => {
     if (e) {
       e.preventDefault();
     }
-    try {
-      setLoading(true);
-      setSearchError('');
-      setMovies([]);
-      if (!search.current?.value) {
-        setLoading(false);
-        return;
-      }
-      const response = await apiConnect.get('', {
-        params: {
-          s: search.current?.value,
-        },
-      });
-      if (!response.data?.Error) {
-        setLoading(false);
-        setMovies(response.data.Search);
-        dispatch(set(response.data.Search));
-      } else {
-        setSearchError(response.data.Error);
-        setLoading(false);
-      }
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-      setSearchError('Something went wrong');
+    if (!search.current?.value) {
+      dispatch(clear());
+      dispatch(resetMovies());
+      return;
     }
+    dispatch(searchAndFetch(search.current.value));
   };
 
   return (
@@ -69,26 +52,26 @@ const Homepage = () => {
             </form>
           </div>
           <div className="flex-1 overflow-y-auto px-10 py-2">
-            {loading ? (
+            {moviesLoading ? (
               <div className="h-full flex justify-center items-center">
                 <BiLoaderAlt className="text-white animate-spin" />
               </div>
             ) : (
               <div className="grid md:grid-cols-4 gap-4">
-                {movies.map((m) => (
+                {allMovies.map((m) => (
                   <MovieCard key={m.imdbID} movie={m} />
                 ))}
               </div>
             )}
-            {searchError && (
+            {moviesError && (
               <div className="h-full flex flex-col gap-y-2 justify-center items-center">
-                <p>{searchError}</p>
+                <p>{moviesError}</p>
                 <Button variant="primary" onClick={() => runSearch()}>
                   Try Again
                 </Button>{' '}
               </div>
             )}
-            {!movies.length && (
+            {!allMovies.length && (
               <div className="h-full flex flex-col gap-y-2 justify-center items-center">
                 <p className="font-bold text-2xl text-white">Enter a search term</p>
                 <Button variant="primary" onClick={() => dispatch(searchAndFetch('fast'))}>

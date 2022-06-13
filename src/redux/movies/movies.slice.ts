@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { MovieType } from '../../utils/types';
-import { searchAndFetch, setMovies } from './movies.actions';
+import { searchAndFetch, clearError, clearMovies } from './movies.actions';
 
 export interface MoviesState {
   movies: MovieType[];
@@ -18,7 +18,8 @@ export const moviesSlice = createSlice({
   name: 'movies',
   initialState,
   reducers: {
-    setMovies,
+    clearError,
+    clearMovies,
   },
   extraReducers: (builder) => {
     builder.addCase(searchAndFetch.fulfilled, (state, action) => {
@@ -38,6 +39,6 @@ export const moviesSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { setMovies: set } = moviesSlice.actions;
+export const { clearError: clear, clearMovies: resetMovies } = moviesSlice.actions;
 
 export default moviesSlice.reducer;

@@ -5,13 +5,17 @@ import apiConnect from '../../utils/apiConnect';
 // import { MovieType } from '../../utils/types';
 import { MoviesState } from './movies.slice';
 
-interface actionType {
-  payload: any;
-  type: string;
-}
+// interface actionType {
+//   payload: any;
+//   type: string;
+// }
 
-export const setMovies = (state: WritableDraft<MoviesState>, action: actionType) => {
-  state.movies = action.payload;
+export const clearError = (state: WritableDraft<MoviesState>) => {
+  state.error = '';
+};
+
+export const clearMovies = (state: WritableDraft<MoviesState>) => {
+  state.movies = [];
 };
 
 export const searchAndFetch = createAsyncThunk(

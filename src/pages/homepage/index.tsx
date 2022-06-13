@@ -1,19 +1,23 @@
-import React, { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { BiLoaderAlt } from 'react-icons/bi';
+import { useDispatch } from 'react-redux';
 import Button from '../../components/Button';
 import Footer from '../../components/Footer';
 import MovieCard from '../../components/MovieCard';
 import Navbar from '../../components/Navbar';
+import { searchAndFetch } from '../../redux/movies/movies.actions';
+import { set } from '../../redux/movies/movies.slice';
+import { AppDispatch } from '../../redux/store';
 import apiConnect from '../../utils/apiConnect';
 import { MovieType } from '../../utils/types';
 
-type Props = {};
-
-const Homepage = (props: Props) => {
+const Homepage = () => {
   const [loading, setLoading] = useState(false);
   const [searchError, setSearchError] = useState('');
   const [movies, setMovies] = useState<MovieType[]>([]);
   const search = useRef<HTMLInputElement>(null);
+
+  const dispatch: any = useDispatch<AppDispatch>();
 
   const runSearch = async (e?: FormEvent) => {
     if (e) {
@@ -35,6 +39,7 @@ const Homepage = (props: Props) => {
       if (!response.data?.Error) {
         setLoading(false);
         setMovies(response.data.Search);
+        dispatch(set(response.data.Search));
       } else {
         setSearchError(response.data.Error);
         setLoading(false);
@@ -86,6 +91,9 @@ const Homepage = (props: Props) => {
             {!movies.length && (
               <div className="h-full flex flex-col gap-y-2 justify-center items-center">
                 <p className="font-bold text-2xl text-white">Enter a search term</p>
+                <Button variant="primary" onClick={() => dispatch(searchAndFetch('fast'))}>
+                  try this
+                </Button>
               </div>
             )}
           </div>

@@ -5,5 +5,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Setup Project
 
 Setup your omdb api in your local .env file
-### `npm install` && `npm start`
 
+### `npm install` && `npm start`

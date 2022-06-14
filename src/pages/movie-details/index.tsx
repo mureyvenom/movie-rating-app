@@ -63,7 +63,7 @@ const MovieDetails = () => {
   return (
     <Layout>
       <div className="flex-1 flex flex-col">
-        <div className="p-10 flex flex-1 justify-between items-center">
+        <div className="p-10 flex md:flex-row flex-col gap-5 flex-1 justify-between items-center">
           <div className="text-white flex-[3] md:pr-40">
             <h1 className="text-3xl font-medium">{movie?.Title}</h1>
             <div className="text-primary flex gap-x-5 items-center py-2">
@@ -90,7 +90,7 @@ const MovieDetails = () => {
             </p>
           </div>
           <div className="flex-[1]">
-            <img src={movie?.Poster} alt="Movie" />
+            <img src={movie?.Poster} alt="Movie" className="w-full" />
           </div>
         </div>
       </div>

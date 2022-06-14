@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { MovieType } from '../utils/types';
 
 interface Props {
@@ -5,8 +6,10 @@ interface Props {
 }
 
 const MovieCard = ({ movie }: Props) => {
+  const navigate = useNavigate();
+
   return (
-    <button>
+    <button onClick={() => navigate(`/movie-details/${movie.imdbID}`)}>
       <div className="p-2 rounded-md bg-black">
         <div
           className="relative group bg-contain bg-center bg-no-repeat h-96"
